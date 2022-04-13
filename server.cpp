@@ -27,7 +27,7 @@ void Server::incomingConnection(qintptr socketDescriptor)
         connect(socket,&QTcpSocket::disconnected,this,&Server::sockDisc);
 
     qDebug()<<socketDescriptor<<" Client connected";
-    QFile textFile("/home/albert/Desktop/names.txt");
+    QFile textFile("/home/albert/Desktop/Projects/Server/Server/ServerS/urls.txt");
     if (textFile.open(QIODevice::ReadOnly)){
         QTextStream textStream(&textFile);
         while (!textStream.atEnd()){
