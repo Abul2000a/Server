@@ -1,12 +1,16 @@
 #include "server.h"
 #include <QFile>
+#include <QDir>
+
 
 
 void Server::startServer()
 {
     if (this->listen(QHostAddress::Any,5555))
     {
+
         qDebug() << "Listening";
+
     }
     else
     {
@@ -24,16 +28,16 @@ void Server::incomingConnection(qintptr socketDescriptor)
     connect(socket, &QTcpSocket::disconnected, this, &Server::sockDisc);
 
     qDebug() << socketDescriptor << " Client connected";
-
-    QFile textFile("/home/albert/Desktop/Projects/Server/Server/ServerS/urls.txt");
-    if (textFile.open(QIODevice::ReadOnly)){
-        QTextStream textStream(&textFile);
-        while (!textStream.atEnd()){
-            textStream >> Data;
-            socket->write(Data);
+    QString path = QDir::currentPath() + "/urls.txt";
+    qDebug() << path;
+    QFile textFile(path);
+        if (textFile.open(QIODevice::ReadOnly)){
+            QTextStream textStream(&textFile);
+            while (!textStream.atEnd()){
+                textStream >> Data;
+                socket->write(Data);
+            }
         }
-    }
-
     qDebug() << "Send client connect status - YES";
 }
 
@@ -47,11 +51,11 @@ void Server::sockReady()
 void Server::sockDisc()
 {
 
-    if (qobject_cast<QAbstractSocket*>(sender())) {
+    if (dynamic_cast<QTcpSocket*>(sender())){
 
-            qDebug() << "Disconnect" ;
-            qInfo() << "deleting..." << socket;
-            sender()->deleteLater();
-        }
+        qDebug() << "Disconnect" ;
+        qInfo() << "deleting..." << socket;
+        sender()->deleteLater();
+    }
 
 }

@@ -9,7 +9,7 @@ class Server: public QTcpServer
     Q_OBJECT
 
 public:
-    Server(QObject * parent = nullptr):QTcpServer(parent){};
+    Server(QObject * parent = nullptr):QTcpServer(parent){}
     QTcpSocket* socket;
     QByteArray Data;
 
