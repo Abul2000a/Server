@@ -1,10 +1,6 @@
 #include "server.h"
 #include <QFile>
 
-Server::Server(){
-}
-
-Server::~Server(){}
 
 void Server::startServer()
 {
@@ -18,15 +14,17 @@ void Server::startServer()
     }
 }
 
+
 void Server::incomingConnection(qintptr socketDescriptor)
 {
     socket = new QTcpSocket(this);
     socket->setSocketDescriptor(socketDescriptor);
 
-        connect(socket,&QTcpSocket::readyRead,this,&Server::sockReady);
-        connect(socket,&QTcpSocket::disconnected,this,&Server::sockDisc);
+    connect(socket, &QTcpSocket::readyRead, this, &Server::sockReady);
+    connect(socket, &QTcpSocket::disconnected, this, &Server::sockDisc);
 
-    qDebug()<<socketDescriptor<<" Client connected";
+    qDebug() << socketDescriptor<<" Client connected";
+
     QFile textFile("/home/albert/Desktop/Projects/Server/Server/ServerS/urls.txt");
     if (textFile.open(QIODevice::ReadOnly)){
         QTextStream textStream(&textFile);
@@ -39,13 +37,21 @@ void Server::incomingConnection(qintptr socketDescriptor)
     qDebug() << "Send client connect status - YES";
 }
 
+
 void Server::sockReady()
 {
-
+    qDebug() << "Ready!";
 }
+
 
 void Server::sockDisc()
 {
-    qDebug() << "Disconnect";
-    socket->deleteLater();
+
+    if (qobject_cast<QAbstractSocket*>(sender())) {
+
+            qDebug() << "Disconnect" ;
+            qInfo() << "deleting" << socket;
+            sender()->deleteLater();
+        }
+
 }
