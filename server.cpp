@@ -23,7 +23,7 @@ void Server::incomingConnection(qintptr socketDescriptor)
     connect(socket, &QTcpSocket::readyRead, this, &Server::sockReady);
     connect(socket, &QTcpSocket::disconnected, this, &Server::sockDisc);
 
-    qDebug() << socketDescriptor<<" Client connected";
+    qDebug() << socketDescriptor << " Client connected";
 
     QFile textFile("/home/albert/Desktop/Projects/Server/Server/ServerS/urls.txt");
     if (textFile.open(QIODevice::ReadOnly)){
@@ -50,7 +50,7 @@ void Server::sockDisc()
     if (qobject_cast<QAbstractSocket*>(sender())) {
 
             qDebug() << "Disconnect" ;
-            qInfo() << "deleting" << socket;
+            qInfo() << "deleting..." << socket;
             sender()->deleteLater();
         }
 

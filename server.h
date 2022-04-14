@@ -7,6 +7,7 @@
 class Server: public QTcpServer
 {
     Q_OBJECT
+
 public:
     Server(QObject * parent = nullptr):QTcpServer(parent){};
     QTcpSocket* socket;
